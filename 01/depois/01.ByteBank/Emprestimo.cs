@@ -38,7 +38,7 @@ namespace _01.ByteBank
             }
             else
             {
-                //lançar uma exceção
+                throw new Exception("Códifgo do contrato é invalido");
             }
         }
 
@@ -58,6 +58,12 @@ namespace _01.ByteBank
 
                 if (value > PRAZO_MAXIMO_PAGAMENTO_ANOS)
                 {
+                    //if (OnPrazoMaximoEstourado != null)
+                    //{
+                    //    OnPrazoMaximoEstourado(this, new EventArgs());
+
+                    //} Equivale ao código abaixo
+
                     OnPrazoMaximoEstourado?.Invoke(this, new EventArgs());
                     return;
                 }
