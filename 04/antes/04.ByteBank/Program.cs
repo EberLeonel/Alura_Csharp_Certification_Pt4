@@ -20,6 +20,8 @@ namespace _04.ByteBank
 
             //MenuCaixaEletronico menu = new MenuCaixaEletronico();
             //menu.Executar();
+
+            IList<Conta> vSpecialAccounts = GetContasEspeciais();
         }
 
 
@@ -31,6 +33,19 @@ namespace _04.ByteBank
             //TAREFA: RETORNAR UMA LISTA COM 
             //TODAS AS CONTAS COM MAIS DE 5 MIL DE SALDO
 
+            //for(int i = 0; i < clientes.Count; i++)
+            //{
+            //    Cliente vClient = clientes[i];
+            //   for(int j = 0; j < vClient.Contas.Count; j++)
+            //    {
+            //       Conta vAccount = vClient.Contas[j];
+            //       if(vAccount.Saldo > 5000)
+            //        {
+            //            contasEspeciais.Add(vAccount);
+            //        }
+            //    }
+            //}
+
             return contasEspeciais;
         }
 
@@ -41,6 +56,16 @@ namespace _04.ByteBank
             //TAREFA: RETORNAR VERDADEIRO OU FALSO
             //INDICANDO SE EXISTE CONTA COM MAIS DE 50 MIL DE SALDO
 
+            foreach(var cliente in clientes)
+            {
+                foreach(var conta in cliente.Contas)
+                {
+                    if(conta.Saldo > 5000)
+                    {
+                       return true;
+                    }
+                }
+            }
             return false;
         }
 
@@ -76,13 +101,12 @@ namespace _04.ByteBank
             //FATORIAL DE 0                      = 1 
 
             int fatorial = 1;
-            int fator = numero;
 
-            while (fator >= 1)
+            for(int i = numero; i >= 1; i--)
             {
-                fatorial = fatorial * fator;
-                fator = fator - 1;
+                fatorial *= fator;
             }
+            
             System.Console.WriteLine($"fatorial de {numero} é {fatorial}");
 
             return fatorial;
