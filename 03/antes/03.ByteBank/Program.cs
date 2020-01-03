@@ -7,9 +7,13 @@ namespace _03.ByteBank
     {
         static void Main(string[] args)
         {
+            GetFatorial(5);
+            RelatorioClientes.ImprimirListagemClientes();
+            MenuCAixaEletronico vMenu = new MenuCAixaEletronico(); 
+            vMenu.Executar();
         }
 
-        private static int GetFatorial(int numero)
+        private static int GetFatorial(int pNumber)
         {
             //FATORIAL DE 5 = 5 x 4 x 3 x 2 x 1  = 120
             //FATORIAL DE 4 = 4 x 3 x 2 x 1      = 24
@@ -19,6 +23,13 @@ namespace _03.ByteBank
             //FATORIAL DE 0                      = 1 
 
             int fatorial = 1;
+            int vFator = pNumber;
+
+            while(vFator >= 1)
+            {            
+                vFator = fatorial * vFator;
+                vFator = vFator - 1;
+            }
 
             System.Console.WriteLine($"fatorial de {numero} é {fatorial}");
 
