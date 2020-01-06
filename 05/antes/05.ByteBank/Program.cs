@@ -10,7 +10,16 @@ namespace _05.ByteBank
     {
         static void Main(string[] args)
         {
-            Console.ReadKey();
+            ContaCorrente vAccountOne = new ContaCorrente(1,100);
+            ContaCorrente vAccountTwo = new ContaCorrente(4,50);
+            System.Console.WriteLine(vAccountOne);
+            System.Console.WriteLine(vAccountTwo);
+
+            ITransferenciaBancaria vTransfer = new ITransferenciaBancaria();
+            vTransfer.Efetuar(vAccountOne, vAccountTwo, 30);
+
+
+             Console.ReadKey();
         }
     }
 
@@ -63,12 +72,37 @@ namespace _05.ByteBank
         public void Efetuar(ContaCorrente contaDebito, ContaCorrente contaCredito
             , decimal valor)
         {
-            Logger.LogInfo("Entrando do método Efetuar.");
+            try
+            {
+                if(contaDebito == null)
+                {
+                    throw new ArgumentNullException(contaDebito);
+                }
+                if(contaCredito == null)
+                {
+                    throw new ArgumentNullException(contaCredito);
+                }
+                if(valor <= 0)
+                {
+                    throw ArgumentOutOfRangeException(valor);
+                }
+                if(valor > contaDebito.Saldo)
+                {
+                   throw new SaldoInsuficienteException(contaDebito.Saldo); 
+                }
 
-            contaDebito.Debitar(valor);
-            contaCredito.Creditar(valor);
-            Logger.LogInfo("Transferência realizada com sucesso.");
-            Logger.LogInfo("Saindo do método Efetuar.");
+                Logger.LogInfo("Entrando do método Efetuar.");
+
+                contaDebito.Debitar(valor);
+                contaCredito.Creditar(valor);
+                Logger.LogInfo("Transferência realizada com sucesso.");
+                Logger.LogInfo("Saindo do método Efetuar.");
+            }
+            catch (Exception ex)
+            {
+                Logger.LogInfo("Erro na operação!");
+                Logger.LogErro(ex.ToString());
+            }
         }
     }
 
@@ -154,5 +188,11 @@ namespace _05.ByteBank
                 sw.WriteLine(DateTime.Now.ToLocalTime() + ": " + tipo + " - " + mensagem);
             }
         }
+    }
+
+    class SaldoInsuficienteException : Exception
+    {
+        public SaldoInsuficienteException(){}
+        public SaldoInsuficienteException(String vMessage) : base(message) {}
     }
 }
