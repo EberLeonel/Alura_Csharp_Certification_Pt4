@@ -128,12 +128,33 @@ namespace _05.ByteBank
             SqlCommand comandoTaxa = GetTaxaTransferenciaCommand
                 (contaCredito.Id, TAXA_TRANSFERENCIA);
 
-            comandoTaxa.ExecuteNonQuery();
-            comandoTransferencia.ExecuteNonQuery();
-            transaction.Commit();
-            Logger.LogInfo("Transferência realizada com sucesso.");
+            try
+            {                
+                comandoTaxa.ExecuteNonQuery();
+                comandoTransferencia.ExecuteNonQuery();
+                transaction.Commit();
+                Logger.LogInfo("Transferência realizada com sucesso.");
 
-            Logger.LogInfo("Saindo do método Efetuar.");
+                Logger.LogInfo("Saindo do método Efetuar.");
+            }
+            catch(SqlException ex)
+            {
+                transaction.Rollback();
+                Logger.LogErro(ex.ToString());
+                throw;
+            }
+            catch(Exception ex)
+            {
+                Logger.LogErro(ex.ToString());
+                throw;
+            }
+            finally
+            {
+                comandoTransferencia.Dispose();
+                comandoTaxa.Dispose();
+                transaction.Dispose();
+                connection.Dispose();
+            }
         }
 
         private SqlCommand GetTransferenciaCommand(int contaDebitoId, int contaCreditoId, decimal valorTransferencia)
